@@ -118,8 +118,6 @@ public class ArrayList<E> {
         var buffer = data;
         dataLength = (int) (data.length * 1.5);
         data = new Object[dataLength];
-
-        if (size >= 0) System.arraycopy(buffer, 0, data, 0, size);
-
+        System.arraycopy(buffer, 0, data, 0, size);
     }
 }
