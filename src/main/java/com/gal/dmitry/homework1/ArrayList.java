@@ -20,6 +20,14 @@ public class ArrayList<E> {
         size++;
     }
 
+    public void add(E element, int index) {
+        checkIndexInRangeForAdd(index);
+        if (size == dataLength) expandDataArray();
+        System.arraycopy(data, index, data, index + 1, size - index);
+        data[index] = element;
+        size++;
+    }
+
     @SuppressWarnings("unchecked")
     public E get(int index) {
         checkIndexInRange(index);
@@ -27,7 +35,13 @@ public class ArrayList<E> {
     }
 
     private void checkIndexInRange(int index) {
-        if ((index > size - 1) || (index < 0)) {
+        if ((index >= size) || (index < 0)) {
+            throw new IndexOutOfBoundsException();
+        }
+    }
+
+    private void checkIndexInRangeForAdd(int index) {
+        if ((index > size) || (index < 0)) {
             throw new IndexOutOfBoundsException();
         }
     }

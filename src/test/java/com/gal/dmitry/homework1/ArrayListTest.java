@@ -129,10 +129,40 @@ class ArrayListTest {
 
         // IndexOutOfBoundsException is cause of InvocationTargetException
         Assertions.assertThrows(InvocationTargetException.class, () ->
-                checkIndexInRange.invoke(integerArrayList, 42));
+                checkIndexInRange.invoke(integerArrayList, 1));
         Assertions.assertThrows(InvocationTargetException.class, () ->
                 checkIndexInRange.invoke(integerArrayList, -1));
+    }
 
+
+    @Test
+    void add_StringWithIndex_canAddElementWithIndex() {
+        for (String element : STRING_DATA_SET) {
+            stringArrayList.add(element);
+        }
+        stringArrayList.add("fourth", 1);
+        Assertions.assertEquals("fourth", stringArrayList.get(1));
+    }
+
+
+    @Test
+    void checkIndexInRangeForAdd_passingWithLegalValue() throws NoSuchMethodException {
+        Method checkIndexInRangeForAdd = ArrayList.class.getDeclaredMethod("checkIndexInRangeForAdd", int.class);
+        checkIndexInRangeForAdd.setAccessible(true);
+        Assertions.assertDoesNotThrow(() -> checkIndexInRangeForAdd.invoke(integerArrayList, 0));
+    }
+
+    @Test
+    void checkIndexInRangeForAdd_throwExceptionWithIllegalValue() throws NoSuchMethodException{
+        integerArrayList.add(INT_DATA_SET[0]);
+        Method checkIndexInRangeForAdd = ArrayList.class.getDeclaredMethod("checkIndexInRangeForAdd", int.class);
+        checkIndexInRangeForAdd.setAccessible(true);
+
+        // IndexOutOfBoundsException is cause of InvocationTargetException
+        Assertions.assertThrows(InvocationTargetException.class, () ->
+                checkIndexInRangeForAdd.invoke(integerArrayList, 2));
+        Assertions.assertThrows(InvocationTargetException.class, () ->
+                checkIndexInRangeForAdd.invoke(integerArrayList, -1));
     }
 
 }
