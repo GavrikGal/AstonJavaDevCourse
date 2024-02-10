@@ -9,14 +9,19 @@ public class ArrayList<E> {
 
     public ArrayList() {
         data = new Object[DEFAULT_COUNT];
+        size = 0;
     }
 
     public void add(E element) {
         data[size] = element;
+        size++;
     }
 
     @SuppressWarnings("unchecked")
     public E get(int index) {
+        if (index > size - 1) {
+            throw new IndexOutOfBoundsException();
+        }
         return (E) data[index];
     }
 }
