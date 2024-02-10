@@ -5,23 +5,39 @@ public class ArrayList<E> {
     private static final int DEFAULT_COUNT = 10;
 
     private Object[] data;
+    private int dataLength;
     private int size;
 
     public ArrayList() {
         data = new Object[DEFAULT_COUNT];
+        dataLength = DEFAULT_COUNT;
         size = 0;
     }
 
     public void add(E element) {
+        if (size == dataLength) expandDataArray();
         data[size] = element;
         size++;
     }
 
     @SuppressWarnings("unchecked")
     public E get(int index) {
-        if (index > size - 1) {
+        checkIndexInRange(index);
+        return (E) data[index];
+    }
+
+    private void checkIndexInRange(int index) {
+        if ((index > size - 1) || (index < 0)) {
             throw new IndexOutOfBoundsException();
         }
-        return (E) data[index];
+    }
+
+    private void expandDataArray() {
+        var buffer = data;
+        dataLength = (int) (data.length * 1.5);
+        data = new Object[dataLength];
+
+        if (size >= 0) System.arraycopy(buffer, 0, data, 0, size);
+
     }
 }
