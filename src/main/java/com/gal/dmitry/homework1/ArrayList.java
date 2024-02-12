@@ -180,6 +180,12 @@ public class ArrayList<E extends Comparable<E>> {
         return data;
     }
 
+    /**
+     * Статический метод сортировки элементов принимаемой коллекции пузырьком.
+     * @param collection коллекция для сортировки.
+     * @return отсортированная коллекция.
+     * @param <T> тип сортируемой коллекции.
+     */
     @SuppressWarnings("unchecked")
     public static <T extends Comparable<? super T>> List<T> sort(List<T> collection) {
         T[] data = (T[]) Array.newInstance(Comparable.class, collection.size());
