@@ -34,7 +34,9 @@ class ArrayListTest {
      */
     @Test
     void add_String_canAddElement() {
-        stringArrayList.add(STRING_DATA_SET[0]);
+        assertDoesNotThrow(() ->
+            stringArrayList.add(STRING_DATA_SET[0])
+        );
     }
 
     /**
@@ -44,7 +46,9 @@ class ArrayListTest {
      */
     @Test
     void add_Integer_canAddElement() {
-        integerArrayList.add(INT_DATA_SET[0]);
+        assertDoesNotThrow(() ->
+            integerArrayList.add(INT_DATA_SET[0])
+        );
     }
 
 
@@ -100,7 +104,9 @@ class ArrayListTest {
     @Test
     void add_String_canAddMoreThanOne() {
         for (var string : STRING_DATA_SET)
-            stringArrayList.add(string);
+            assertDoesNotThrow(() ->
+                stringArrayList.add(string)
+            );
     }
 
     /**
@@ -126,7 +132,9 @@ class ArrayListTest {
     @Test
     void add_Integer_canAddMoreThanOne() {
         for (var element : INT_DATA_SET)
-            integerArrayList.add(element);
+            assertDoesNotThrow(() ->
+                integerArrayList.add(element)
+            );
     }
 
 
