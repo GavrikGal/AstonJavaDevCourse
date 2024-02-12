@@ -38,14 +38,17 @@ public class ArrayList<E extends Comparable<E>> {
     /**
      * Конструктор ArrayList, который принимает другую коллекцию в качестве параметра
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "SuspiciousSystemArraycopy"})
     public ArrayList(Collection<? extends E> collection) {
         dataLength = DEFAULT_COUNT;
         data = (E[]) Array.newInstance(Comparable.class, dataLength);
-        while (collection.size() > dataLength)
-            expandDataArray();
         size = collection.size();
-        if (size == 0) return;
+        if (size == 0) {
+            return;
+        }
+        while (collection.size() > dataLength) {
+            expandDataArray();
+        }
         Object[] array = collection.toArray();
         System.arraycopy(array, 0, data, 0, size);
     }
