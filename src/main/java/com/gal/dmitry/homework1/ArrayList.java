@@ -1,7 +1,9 @@
 package com.gal.dmitry.homework1;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 public class ArrayList<E extends Comparable<E>> {
 
@@ -81,6 +83,7 @@ public class ArrayList<E extends Comparable<E>> {
      * Добавить все элементы.
      * @param collection коллекция для добавления
      */
+    @SuppressWarnings("SuspiciousSystemArraycopy")
     public boolean addAll(Collection<? extends E> collection) {
         if (collection.isEmpty()) return false;
         while (size + collection.size() > dataLength) expandDataArray();
@@ -96,6 +99,7 @@ public class ArrayList<E extends Comparable<E>> {
      * @param index - позиция добавляемого элемента
      * @param collection коллекция для добавления
      */
+    @SuppressWarnings("SuspiciousSystemArraycopy")
     public boolean addAll(int index, Collection<? extends E> collection) {
         checkIndexInRangeForAdd(index);
         if (collection.isEmpty()) return false;
@@ -114,10 +118,9 @@ public class ArrayList<E extends Comparable<E>> {
      * @param index int позиция элемента
      * @return элемент на позиции index
      */
-    @SuppressWarnings("unchecked")
     public E get(int index) {
         checkIndexInRange(index);
-        return (E) data[index];
+        return data[index];
     }
 
     /**
@@ -135,10 +138,9 @@ public class ArrayList<E extends Comparable<E>> {
      * @param index (int) позиция удаляемого элемента
      * @return удаляемый элемент
      */
-    @SuppressWarnings("unchecked")
     public E remove(int index) {
         checkIndexInRange(index);
-        E returnedValue = (E) data[index];
+        E returnedValue = data[index];
         size--;
         System.arraycopy(data, index + 1, data, index, size - index);
         return returnedValue;
@@ -148,11 +150,24 @@ public class ArrayList<E extends Comparable<E>> {
      * Сортировка элементов пузырьком.
      * После сортировки элементы находятся в порядке возрастания
      */
-    @SuppressWarnings("unchecked")
-    public <T extends Comparable<T>> void sort() {
+    public void sort() {
         if (this.isSorted())
             return;
-        T[] data = (T[]) this.data;
+        this.data = bubleSort(this.data, size);
+    }
+
+
+    /**
+     * Внутренний статический метод для сортировки массива пузырьком.
+     * Возвращает массив отсортированный по возрастанию.
+     * @param arrayToSort сортируемый массив
+     * @param size количество элементов в массиве
+     * @return отсортированный массив
+     * @param <T> тип сортируемых элементов
+     */
+    private static <T extends Comparable<? super T>> T[] bubleSort(T[] arrayToSort, int size) {
+        T[] data = arrayToSort.clone();
+
         for (int out = size - 1; out >= 1; out--){
             for (int in = 0; in < out; in++){
                 if(data[in].compareTo(data[in + 1]) > 0) {
@@ -162,6 +177,17 @@ public class ArrayList<E extends Comparable<E>> {
                 }
             }
         }
+        return data;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends Comparable<? super T>> List<T> sort(List<T> collection) {
+        T[] data = (T[]) Array.newInstance(Comparable.class, collection.size());
+        collection.toArray(data);
+        int size = collection.size();
+        data = bubleSort(data, size);
+
+        return Arrays.asList(data);
     }
 
     /**
@@ -204,7 +230,6 @@ public class ArrayList<E extends Comparable<E>> {
     private void expandDataArray() {
         var buffer = data;
         dataLength = (int) (data.length * 1.5);
-//        data = new Object[dataLength];
         data = (E[]) Array.newInstance(Comparable.class, dataLength);
         System.arraycopy(buffer, 0, data, 0, size);
     }

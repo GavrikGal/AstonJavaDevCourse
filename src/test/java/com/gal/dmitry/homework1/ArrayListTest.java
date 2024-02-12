@@ -27,16 +27,6 @@ class ArrayListTest {
         integerArrayList = new ArrayList<Integer>();
     }
 
-    @Test
-    void example() {
-        //todo: удалить
-        var testArray = new java.util.ArrayList<Integer>();
-        testArray.add(1);
-        var result = testArray.get(0);
-        assertEquals(1, result);
-    }
-
-
     /**
      * Тест работы метода add(E element).
      * Есть возможность добавления элемента.
@@ -391,5 +381,16 @@ class ArrayListTest {
                 arrayList.get(STRING_DATA_SET.length-1));
     }
 
+    /**
+     * Тест статического метода sort(List<?>).
+     * Метод должен вернуть отсортированную коллекцию.
+     */
+    @Test
+    void arrayListSort_Integer_canSortIntegerCollectionByStaticMethod() {
 
+        List<Integer> unsorted = Arrays.stream(INT_NOT_SORTED_DATA_SET).boxed().toList();
+        var sorted = integerArrayList.sort(unsorted);
+        List<Integer> expected = Arrays.stream(INT_DATA_SET).boxed().toList();
+        assertEquals(expected, sorted);
+    }
 }
