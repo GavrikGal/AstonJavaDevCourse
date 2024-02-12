@@ -131,7 +131,10 @@ public class ArrayList<E extends Comparable<E>> {
      * Сортировка элементов пузырьком.
      * После сортировки элементы находятся в порядке возрастания
      */
+    @SuppressWarnings("unchecked")
     public <T extends Comparable<T>> void sort() {
+        if (this.isSorted())
+            return;
         T[] data = (T[]) this.data;
         for (int out = size - 1; out >= 1; out--){
             for (int in = 0; in < out; in++){
@@ -142,6 +145,18 @@ public class ArrayList<E extends Comparable<E>> {
                 }
             }
         }
+    }
+
+    /**
+     * Проверяет, является ли коллекция отсортированной
+     * @return true - коллекция отсортирована
+     */
+    public boolean isSorted() {
+        for (int i=0; i<size-1; i++) {
+            if (data[i].compareTo(data[i+1]) > 0)
+                return false;
+        }
+        return true;
     }
 
     /**

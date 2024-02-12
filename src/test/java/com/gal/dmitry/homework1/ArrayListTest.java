@@ -359,4 +359,25 @@ class ArrayListTest {
                 integerArrayList.get(INT_NOT_SORTED_DATA_SET.length-1));
     }
 
+    /**
+     * Тест работы метода isSorted().
+     * Отсортированная коллекция вернет true
+     */
+    @Test
+    void isSorted_Integer_sortedCollectionReturnTrue() {
+        integerArrayList.addAll(Arrays.stream(INT_DATA_SET).boxed().toList());
+        assertTrue(integerArrayList.isSorted());
+    }
+
+    /**
+     * Тест работы метода isSorted().
+     * Не отсортированная коллекция вернет false
+     */
+    @Test
+    void isSorted_Integer_unsortedCollectionReturnFalse() {
+        integerArrayList.addAll(Arrays.stream(INT_NOT_SORTED_DATA_SET).boxed().toList());
+        assertFalse(integerArrayList.isSorted());
+    }
+
+
 }
