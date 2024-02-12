@@ -30,10 +30,24 @@ public class ArrayList<E extends Comparable<E>> {
      */
     @SuppressWarnings("unchecked")
     public ArrayList() {
-//        data = new Object[DEFAULT_COUNT];
         dataLength = DEFAULT_COUNT;
         size = 0;
         data = (E[]) Array.newInstance(Comparable.class, dataLength);
+    }
+
+    /**
+     * Конструктор ArrayList, который принимает другую коллекцию в качестве параметра
+     */
+    @SuppressWarnings("unchecked")
+    public ArrayList(Collection<? extends E> collection) {
+        dataLength = DEFAULT_COUNT;
+        data = (E[]) Array.newInstance(Comparable.class, dataLength);
+        while (collection.size() > dataLength)
+            expandDataArray();
+        size = collection.size();
+        if (size == 0) return;
+        Object[] array = collection.toArray();
+        System.arraycopy(array, 0, data, 0, size);
     }
 
     /**

@@ -379,5 +379,17 @@ class ArrayListTest {
         assertFalse(integerArrayList.isSorted());
     }
 
+    /**
+     * Тест конструктора ArrayList(Collection<?> collection),
+     * который принимает другую коллекцию в качестве параметра
+     */
+    @Test
+    void arrayList_String_canCreateArrayListByAnotherCollection() {
+        ArrayList<String> arrayList = new ArrayList<>(List.of(STRING_DATA_SET));
+        assertEquals(STRING_DATA_SET[0], arrayList.get(0));
+        assertEquals(STRING_DATA_SET[STRING_DATA_SET.length-1],
+                arrayList.get(STRING_DATA_SET.length-1));
+    }
+
 
 }
