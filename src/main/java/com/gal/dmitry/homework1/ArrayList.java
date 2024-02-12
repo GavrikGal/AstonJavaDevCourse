@@ -1,6 +1,9 @@
 package com.gal.dmitry.homework1;
 
-public class ArrayList<E> {
+import java.lang.reflect.Array;
+import java.util.Collection;
+
+public class ArrayList<E extends Comparable<E>> {
 
     /**
      * Емкость внутреннего массива данных
@@ -10,7 +13,7 @@ public class ArrayList<E> {
     /**
      * Внутренний массив данных
      */
-    private Object[] data;
+    private E[] data;
 
     /**
      * Текущая емкость внутреннего массива данных
@@ -25,10 +28,12 @@ public class ArrayList<E> {
     /**
      * Конструктор пустого ArrayList
      */
+    @SuppressWarnings("unchecked")
     public ArrayList() {
-        data = new Object[DEFAULT_COUNT];
+//        data = new Object[DEFAULT_COUNT];
         dataLength = DEFAULT_COUNT;
         size = 0;
+        data = (E[]) Array.newInstance(Comparable.class, dataLength);
     }
 
     /**
@@ -44,15 +49,47 @@ public class ArrayList<E> {
     /**
      * Добавить элемент на позицию index.
      * Элементы, находящиеся от позиции index и далее, сдвигаются
-     * @param element добавляемый элемент
      * @param index позиция добавляемого элемента
+     * @param element добавляемый элемент
      */
-    public void add(E element, int index) {
+    public void add(int index, E element) {
         checkIndexInRangeForAdd(index);
         if (size == dataLength) expandDataArray();
         System.arraycopy(data, index, data, index + 1, size - index);
         data[index] = element;
         size++;
+    }
+
+    /**
+     * Добавить все элементы.
+     * @param collection коллекция для добавления
+     */
+    public boolean addAll(Collection<? extends E> collection) {
+        if (collection.isEmpty()) return false;
+        while (size + collection.size() > dataLength) expandDataArray();
+        Object[] array = collection.toArray();
+        System.arraycopy(array, 0, data, size, array.length);
+        size += array.length;
+        return true;
+    }
+
+    /**
+     * Добавить все элементы на позицию index.
+     * Элементы находящиеся за позицией index сдвигаются на длину добавляемой коллекции
+     * @param index - позиция добавляемого элемента
+     * @param collection коллекция для добавления
+     */
+    public boolean addAll(int index, Collection<? extends E> collection) {
+        checkIndexInRangeForAdd(index);
+        if (collection.isEmpty()) return false;
+        while (size + collection.size() > dataLength) expandDataArray();
+        Object[] array = collection.toArray();
+
+        System.arraycopy(data, index, data, index+array.length, size - index);
+        System.arraycopy(array, 0, data, index, array.length);
+
+        size += array.length;
+        return true;
     }
 
     /**
@@ -91,6 +128,23 @@ public class ArrayList<E> {
     }
 
     /**
+     * Сортировка элементов пузырьком.
+     * После сортировки элементы находятся в порядке возрастания
+     */
+    public <T extends Comparable<T>> void sort() {
+        T[] data = (T[]) this.data;
+        for (int out = size - 1; out >= 1; out--){
+            for (int in = 0; in < out; in++){
+                if(data[in].compareTo(data[in + 1]) > 0) {
+                    T buff = data[in];
+                    data[in] = data[in+1];
+                    data[in+1] = buff;
+                }
+            }
+        }
+    }
+
+    /**
      * Служебный метод проверки нахождения индекса в границах массива
      * @param index (int) проверяемый индекс
      */
@@ -114,10 +168,12 @@ public class ArrayList<E> {
     /**
      * Служебный метод расширения внутреннего массива данных
      */
+    @SuppressWarnings("unchecked")
     private void expandDataArray() {
         var buffer = data;
         dataLength = (int) (data.length * 1.5);
-        data = new Object[dataLength];
+//        data = new Object[dataLength];
+        data = (E[]) Array.newInstance(Comparable.class, dataLength);
         System.arraycopy(buffer, 0, data, 0, size);
     }
 }

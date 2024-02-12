@@ -1,17 +1,21 @@
 package com.gal.dmitry.homework1;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class ArrayListTest {
 
     private static final String[] STRING_DATA_SET = {"first", "second", "third"};
     private static final int[] INT_DATA_SET = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+    private static final int[] INT_NOT_SORTED_DATA_SET = {3, 1, 11, 8, 6, 5, 10, 4, 9, 7, 2};
 
 
     ArrayList<String> stringArrayList;
@@ -29,13 +33,13 @@ class ArrayListTest {
         var testArray = new java.util.ArrayList<Integer>();
         testArray.add(1);
         var result = testArray.get(0);
-        Assertions.assertEquals(1, result);
+        assertEquals(1, result);
     }
 
 
     /**
      * Тест работы метода add(E element).
-     * Имеется возможность добавления элемента.
+     * Есть возможность добавления элемента.
      * Тестируется с элементами типа String.
      */
     @Test
@@ -45,7 +49,7 @@ class ArrayListTest {
 
     /**
      * Тест работы метода add(E element).
-     * Имеется возможность добавления элемента.
+     * Есть возможность добавления элемента.
      * Тестируется с элементами типа int.
      */
     @Test
@@ -56,24 +60,24 @@ class ArrayListTest {
 
     /**
      * Тест работы метода get(int index).
-     * Имеется возможность получения добавленного элемента.
+     * Есть возможность получения добавленного элемента.
      * Тестируется с элементами типа String.
      */
     @Test
     void get_String_canGetAddedElement() {
         stringArrayList.add(STRING_DATA_SET[0]);
-        Assertions.assertEquals(STRING_DATA_SET[0], stringArrayList.get(0));
+        assertEquals(STRING_DATA_SET[0], stringArrayList.get(0));
     }
 
     /**
      * Тест работы метода get(int index).
-     * Имеется возможность получения добавленного элемента.
+     * Есть возможность получения добавленного элемента.
      * Тестируется с элементами типа int.
      */
     @Test
     void get_Integer_canGetAddedElement() {
         integerArrayList.add(INT_DATA_SET[0]);
-        Assertions.assertEquals(INT_DATA_SET[0], integerArrayList.get(0));
+        assertEquals(INT_DATA_SET[0], integerArrayList.get(0));
     }
 
     /**
@@ -84,7 +88,7 @@ class ArrayListTest {
     @Test
     void get_String_getWithIndexHigherThanArraySizeTrowException() {
         stringArrayList.add(STRING_DATA_SET[0]);
-        Assertions.assertThrows(IndexOutOfBoundsException.class, () ->
+        assertThrows(IndexOutOfBoundsException.class, () ->
                 stringArrayList.get(stringArrayList.size()));
     }
 
@@ -95,7 +99,7 @@ class ArrayListTest {
      */
     @Test
     void get_String_getWithIndexLowerThanZeroTrowException() {
-        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> stringArrayList.get(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> stringArrayList.get(-1));
     }
 
     /**
@@ -119,7 +123,7 @@ class ArrayListTest {
     void get_String_canGetLastAddedElement() {
         for (var string : STRING_DATA_SET)
             stringArrayList.add(string);
-        Assertions.assertEquals(
+        assertEquals(
                 STRING_DATA_SET[STRING_DATA_SET.length-1],
                 stringArrayList.get(STRING_DATA_SET.length-1));
     }
@@ -159,7 +163,7 @@ class ArrayListTest {
 
         String message = "Start data.size (" + startDataSize + ") should be greater than result ("
                 + resultDataSize + ")";
-        Assertions.assertTrue(startDataSize < resultDataSize, message);
+        assertTrue(startDataSize < resultDataSize, message);
     }
 
     /**
@@ -171,7 +175,7 @@ class ArrayListTest {
         integerArrayList.add(INT_DATA_SET[0]);
         Method checkIndexInRange = ArrayList.class.getDeclaredMethod("checkIndexInRange", int.class);
         checkIndexInRange.setAccessible(true);
-        Assertions.assertDoesNotThrow(() -> checkIndexInRange.invoke(integerArrayList, 0));
+        assertDoesNotThrow(() -> checkIndexInRange.invoke(integerArrayList, 0));
     }
 
     /**
@@ -185,15 +189,15 @@ class ArrayListTest {
         checkIndexInRange.setAccessible(true);
 
         // IndexOutOfBoundsException is cause of InvocationTargetException
-        Assertions.assertThrows(InvocationTargetException.class, () ->
+        assertThrows(InvocationTargetException.class, () ->
                 checkIndexInRange.invoke(integerArrayList, 1));
-        Assertions.assertThrows(InvocationTargetException.class, () ->
+        assertThrows(InvocationTargetException.class, () ->
                 checkIndexInRange.invoke(integerArrayList, -1));
     }
 
 
     /**
-     * Тест работы метода add(E element, int index).
+     * Тест работы метода add(int index, E element).
      * Можно добавить элемент на позицию по номеру index.
      * Тестируется с элементами типа String.
      */
@@ -202,8 +206,8 @@ class ArrayListTest {
         for (String element : STRING_DATA_SET) {
             stringArrayList.add(element);
         }
-        stringArrayList.add("fourth", 1);
-        Assertions.assertEquals("fourth", stringArrayList.get(1));
+        stringArrayList.add(1, "fourth");
+        assertEquals("fourth", stringArrayList.get(1));
     }
 
     /**
@@ -214,7 +218,7 @@ class ArrayListTest {
     void checkIndexInRangeForAdd_passingWithLegalValue() throws NoSuchMethodException {
         Method checkIndexInRangeForAdd = ArrayList.class.getDeclaredMethod("checkIndexInRangeForAdd", int.class);
         checkIndexInRangeForAdd.setAccessible(true);
-        Assertions.assertDoesNotThrow(() -> checkIndexInRangeForAdd.invoke(integerArrayList, 0));
+        assertDoesNotThrow(() -> checkIndexInRangeForAdd.invoke(integerArrayList, 0));
     }
 
     /**
@@ -228,9 +232,9 @@ class ArrayListTest {
         checkIndexInRangeForAdd.setAccessible(true);
 
         // IndexOutOfBoundsException is cause of InvocationTargetException
-        Assertions.assertThrows(InvocationTargetException.class, () ->
+        assertThrows(InvocationTargetException.class, () ->
                 checkIndexInRangeForAdd.invoke(integerArrayList, 2));
-        Assertions.assertThrows(InvocationTargetException.class, () ->
+        assertThrows(InvocationTargetException.class, () ->
                 checkIndexInRangeForAdd.invoke(integerArrayList, -1));
     }
 
@@ -244,7 +248,7 @@ class ArrayListTest {
         for (String element : STRING_DATA_SET) {
             stringArrayList.add(element);
         }
-        Assertions.assertEquals(STRING_DATA_SET.length, stringArrayList.size());
+        assertEquals(STRING_DATA_SET.length, stringArrayList.size());
     }
 
     /**
@@ -258,10 +262,101 @@ class ArrayListTest {
         for (String element : STRING_DATA_SET) {
             stringArrayList.add(element);
         }
+        assertEquals(STRING_DATA_SET[1], stringArrayList.remove(1));
+        assertEquals(STRING_DATA_SET.length - 1, stringArrayList.size());
+        assertEquals(STRING_DATA_SET[2], stringArrayList.get(1));
+    }
 
-        Assertions.assertEquals(STRING_DATA_SET[1], stringArrayList.remove(1));
-        Assertions.assertEquals(STRING_DATA_SET.length - 1, stringArrayList.size());
-        Assertions.assertEquals(STRING_DATA_SET[2], stringArrayList.get(1));
+    /**
+     * Тест работы метода addAll(Collections<?> collection). Вызов метода не вызывает ошибок.
+     * Успешное добавление коллекции вернет true.
+     * Тестируется с элементами типа String.
+     */
+    @Test
+    void addAll_String_canAddCollection() {
+        assertDoesNotThrow(() -> stringArrayList.addAll(List.of(STRING_DATA_SET)));
+        assertTrue(() -> stringArrayList.addAll(List.of(STRING_DATA_SET)));
+    }
+
+    /**
+     * Тест работы метода addAll(Collections<?> collection).
+     * Добавление пустой коллекции вернет false.
+     * Тестируется с элементами типа String.
+     */
+    @Test
+    void addAll_String_addingEmptyCollectionsReturnFalse() {
+        assertFalse(() -> stringArrayList.addAll(new java.util.ArrayList<String>()));
+    }
+
+    /**
+     * Тест работы метода addAll(Collections<?> collection).
+     * После добавления элементы можно получить методом get(index)
+     * Тестируется с элементами типа String.
+     */
+    @Test
+    void addAll_String_canGetAddedElementsOfCollection() {
+        stringArrayList.addAll(List.of(STRING_DATA_SET));
+        assertEquals(STRING_DATA_SET[0], stringArrayList.get(0));
+        assertEquals(STRING_DATA_SET[STRING_DATA_SET.length-1],
+                stringArrayList.get(STRING_DATA_SET.length-1));
+    }
+
+    /**
+     * Тест работы метода addAll(Collections<?> collection).
+     * После добавления элементы можно получить методом get(index)
+     * Тестируется с элементами типа int.
+     */
+    @Test
+    void addAll_Integer_canGetAddedElementsOfCollection() {
+        integerArrayList.addAll(Arrays.stream(INT_DATA_SET).boxed().toList());
+        assertEquals(INT_DATA_SET[0], integerArrayList.get(0));
+        assertEquals(INT_DATA_SET[INT_DATA_SET.length-1],
+                integerArrayList.get(INT_DATA_SET.length-1));
+    }
+
+    /**
+     * Тест работы метода addAll(int index, Collections<?> collection). Вызов метода не вызывает ошибок.
+     * Успешное добавление коллекции вернет true
+     * Тестируется с элементами типа String.
+     */
+    @Test
+    void addAll_StringWithIndex_canAddCollectionToPosition() {
+        stringArrayList.addAll(List.of(STRING_DATA_SET));
+        assertDoesNotThrow(() -> stringArrayList.addAll(1, List.of(STRING_DATA_SET)));
+        assertTrue(() -> stringArrayList.addAll(1, List.of(STRING_DATA_SET)));
+    }
+
+    /**
+     * Тест работы метода addAll(int index, Collections<?> collection).
+     * После добавления элементов на позицию их можно получить методом get(index)
+     * Тестируется с элементами типа String.
+     */
+    @Test
+    void addAll_StringWithIndex_canGetAddedElementsOfCollectionPuttedToPosition() {
+        stringArrayList.addAll(List.of(STRING_DATA_SET));
+
+        stringArrayList.addAll(1, List.of(STRING_DATA_SET));
+
+        assertEquals(STRING_DATA_SET[0], stringArrayList.get(1));
+        assertEquals(STRING_DATA_SET[STRING_DATA_SET.length-1],
+                stringArrayList.get(1 + STRING_DATA_SET.length-1));
+        assertEquals(STRING_DATA_SET[STRING_DATA_SET.length-1],
+                stringArrayList.get(STRING_DATA_SET.length + STRING_DATA_SET.length-1));
+    }
+
+    /**
+     * Тест работы метода sort().
+     * После вызова элементы находятся в порядке возрастания.
+     * Тестируется с элементами типа String.
+     */
+    @Test
+    void sort_Integer_sortedElementInAscendingOrder() {
+        integerArrayList.addAll(Arrays.stream(INT_NOT_SORTED_DATA_SET).boxed().toList());
+        integerArrayList.sort();
+        assertEquals(INT_DATA_SET[0], integerArrayList.get(0));
+        assertEquals(INT_DATA_SET[4], integerArrayList.get(4));
+        assertEquals(INT_DATA_SET[INT_DATA_SET.length-1],
+                integerArrayList.get(INT_NOT_SORTED_DATA_SET.length-1));
     }
 
 }
