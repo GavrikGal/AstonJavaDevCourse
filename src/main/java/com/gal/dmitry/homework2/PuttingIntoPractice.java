@@ -64,7 +64,7 @@ public class PuttingIntoPractice {
     public static List<String> task2(Collection<Transaction> transactions) {
         return transactions.stream()
                 .map(transaction -> transaction.getTrader().getCity())
-                .collect(Collectors.toSet()).stream()
+                .distinct()
                 .toList();
     }
 
@@ -72,7 +72,7 @@ public class PuttingIntoPractice {
         return transactions.stream()
                 .map(Transaction::getTrader)
                 .filter(trader -> Objects.equals(trader.getCity(), "Cambridge"))
-                .collect(Collectors.toSet()).stream()
+                .distinct()
                 .sorted(Comparator.comparing(Trader::getName))
                 .toList();
     }
@@ -80,7 +80,7 @@ public class PuttingIntoPractice {
     public static String task4(Collection<Transaction> transactions) {
         return transactions.stream()
                 .map(Transaction::getTrader)
-                .collect(Collectors.toSet()).stream()
+                .distinct()
                 .map(Trader::getName)
                 .sorted()
                 .collect(Collectors.joining(" "));
@@ -89,7 +89,7 @@ public class PuttingIntoPractice {
     public static boolean task5(Collection<Transaction> transactions) {
         return transactions.stream()
                 .map(Transaction::getTrader)
-                .collect(Collectors.toSet()).stream()
+                .distinct()
                 .anyMatch(trader -> trader.getCity().equals("Milan"));
     }
 
