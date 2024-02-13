@@ -1,9 +1,6 @@
 package com.gal.dmitry.homework2;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class PuttingIntoPractice {
@@ -47,6 +44,10 @@ public class PuttingIntoPractice {
         int sumTransactionsCambridgeTraders = task6(transactions);
         printResult(6, "Sum of transactions by traders from Cambridge",
                 sumTransactionsCambridgeTraders);
+
+        int maxSumOfTransaction = task7(transactions);
+        printResult(7, "Max sum of transactin is",
+                maxSumOfTransaction);
 
     }
 
@@ -101,5 +102,11 @@ public class PuttingIntoPractice {
                 .filter(transaction -> transaction.getTrader().getCity().equals("Cambridge"))
                 .mapToInt(Transaction::getValue)
                 .sum();
+    }
+
+    public static int task7(Collection<Transaction> transactions) {
+        return transactions.stream()
+                .mapToInt(Transaction::getValue)
+                .max().orElse(0);
     }
 }
