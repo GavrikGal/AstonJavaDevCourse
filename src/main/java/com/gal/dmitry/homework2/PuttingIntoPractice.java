@@ -20,7 +20,6 @@ public class PuttingIntoPractice {
                 new Transaction(alan, 2012, 950)
         );
 
-
         List<Transaction> transaction2011byValue = task1(transactions);
         printResult(1, "All transaction in 2011 by value",
                 transaction2011byValue);
