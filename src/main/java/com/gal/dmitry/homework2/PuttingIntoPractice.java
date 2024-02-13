@@ -54,13 +54,6 @@ public class PuttingIntoPractice {
 
     }
 
-    public static void printResult(int taskNum, String taskName,
-                     Object result) {
-        System.out.println(taskNum + ". " + taskName + ":");
-        System.out.println(result);
-        System.out.println();
-    }
-
     public static List<Transaction> task1(Collection<Transaction> transactions) {
         return transactions.stream()
                 .filter(transaction -> transaction.getYear() == 2011)
@@ -116,5 +109,12 @@ public class PuttingIntoPractice {
     public static Transaction task8(Collection<Transaction> transactions) {
         return transactions.stream()
                 .min(Comparator.comparingInt(Transaction::getValue)).orElseThrow();
+    }
+
+    public static void printResult(int taskNum, String taskName,
+                                   Object result) {
+        System.out.println(taskNum + ". " + taskName + ":");
+        System.out.println(result);
+        System.out.println();
     }
 }
