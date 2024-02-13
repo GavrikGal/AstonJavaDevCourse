@@ -23,38 +23,83 @@ public class PuttingIntoPractice {
                 new Transaction(alan, 2012, 950)
         );
 
-        System.out.println("1. All transaction in 2011 by value:");
-        List<Transaction> transaction2011byValue = transactions.stream()
+
+        List<Transaction> transaction2011byValue = task1(transactions);
+        printResult(1, "All transaction in 2011 by value",
+                transaction2011byValue);
+
+        List<String> tradersCities = task2(transactions);
+        printResult(2, "City set",
+                tradersCities);
+
+        List<Trader> tradersFromCambridge = task3(transactions);
+        printResult(3, "All traders from Cambridge by name",
+                tradersFromCambridge);
+
+        String tradersNames = task4(transactions);
+        printResult(4, "String with sorted trader's names:",
+                tradersNames);
+
+        boolean hasTraderFromMilan = task5(transactions);
+        printResult(5, "Has any trader from Milan",
+                hasTraderFromMilan);
+
+        int sumTransactionsCambridgeTraders = task6(transactions);
+        printResult(6, "Sum of transactions by traders from Cambridge",
+                sumTransactionsCambridgeTraders);
+
+    }
+
+    public static void printResult(int taskNum, String taskName,
+                     Object result) {
+        System.out.println(taskNum + ". " + taskName + ":");
+        System.out.println(result);
+        System.out.println();
+    }
+
+    public static List<Transaction> task1(Collection<Transaction> transactions) {
+        return transactions.stream()
                 .filter(transaction -> transaction.getYear() == 2011)
                 .sorted(Comparator.comparingInt(Transaction::getValue))
                 .toList();
-        System.out.println(transaction2011byValue);
+    }
 
-        System.out.println("\n2. City set:");
-        List<String> tradersCities = transactions.stream()
+    public static List<String> task2(Collection<Transaction> transactions) {
+        return transactions.stream()
                 .map(transaction -> transaction.getTrader().getCity())
                 .collect(Collectors.toSet()).stream()
                 .toList();
+    }
 
-        System.out.println(tradersCities);
-
-        System.out.println("\n3. All traders from Cambridge by name:");
-        List<Trader> tradersFromCambridge = transactions.stream()
+    public static List<Trader> task3(Collection<Transaction> transactions) {
+        return transactions.stream()
                 .map(Transaction::getTrader)
                 .filter(trader -> Objects.equals(trader.getCity(), "Cambridge"))
                 .collect(Collectors.toSet()).stream()
                 .sorted(Comparator.comparing(Trader::getName))
                 .toList();
-        System.out.println(tradersFromCambridge);
+    }
 
-        System.out.println("\n4. String with sorted trader's names:");
-        String tradersNames = transactions.stream()
+    public static String task4(Collection<Transaction> transactions) {
+        return transactions.stream()
                 .map(Transaction::getTrader)
                 .collect(Collectors.toSet()).stream()
                 .map(Trader::getName)
                 .sorted()
                 .collect(Collectors.joining(" "));
-        System.out.println(tradersNames);
+    }
 
+    public static boolean task5(Collection<Transaction> transactions) {
+        return transactions.stream()
+                .map(Transaction::getTrader)
+                .collect(Collectors.toSet()).stream()
+                .anyMatch(trader -> trader.getCity().equals("Milan"));
+    }
+
+    public static int task6(Collection<Transaction> transactions) {
+        return transactions.stream()
+                .filter(transaction -> transaction.getTrader().getCity().equals("Cambridge"))
+                .mapToInt(Transaction::getValue)
+                .sum();
     }
 }
