@@ -49,6 +49,10 @@ public class PuttingIntoPractice {
         printResult(7, "Max sum of transactin is",
                 maxSumOfTransaction);
 
+        Transaction minSumTransaction = task8(transactions);
+        printResult(8, "Transaction with min sum",
+                minSumTransaction);
+
     }
 
     public static void printResult(int taskNum, String taskName,
@@ -108,5 +112,10 @@ public class PuttingIntoPractice {
         return transactions.stream()
                 .mapToInt(Transaction::getValue)
                 .max().orElse(0);
+    }
+
+    public static Transaction task8(Collection<Transaction> transactions) {
+        return transactions.stream()
+                .min(Comparator.comparingInt(Transaction::getValue)).orElseThrow();
     }
 }
